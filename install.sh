@@ -3,44 +3,44 @@
 
 #################################
 #				#
-#	xinit install script	#
+#	xwiki-ctrl install script	#
 #				#
 #################################
 
 # load the function file
-if [[ ! -e var/lib/xinit/functions ]]; then
+if [[ ! -e var/lib/xwiki-ctrl/functions ]]; then
 
-echo "Error: I can't find var/lib/xinit/functions file."
+echo "Error: I can't find var/lib/xwiki-ctrl/functions file."
 exit 12
 
 fi
 
-if [[ ! -e var/lib/xinit/vars ]]; then
+if [[ ! -e var/lib/xwiki-ctrl/vars ]]; then
 
-echo "Error: I can't find var/lib/xinit/vars file."
+echo "Error: I can't find var/lib/xwiki-ctrl/vars file."
 exit 15
 
 fi
 
-. var/lib/xinit/functions
-. var/lib/xinit/vars
+. var/lib/xwiki-ctrl/functions
+. var/lib/xwiki-ctrl/vars
 
-xinit_update ()
+xwiki-ctrl_update ()
 {
 
-	if [[ -e /var/lib/xinit/vars ]]; then	
+	if [[ -e /var/lib/xwiki-ctrl/vars ]]; then	
 
-		installed_xinit_version="`grep VERSION /var/lib/xinit/vars | cut -d = -f 2`"
-		current_xinit_version="`grep VERSION var/lib/xinit/vars | cut -d = -f 2`"
+		installed_xwiki-ctrl_version="`grep VERSION /var/lib/xwiki-ctrl/vars | cut -d = -f 2`"
+		current_xwiki-ctrl_version="`grep VERSION var/lib/xwiki-ctrl/vars | cut -d = -f 2`"
 
-		if [[ $installed_xinit_version != $current_xinit_version ]]; then
+		if [[ $installed_xwiki-ctrl_version != $current_xwiki-ctrl_version ]]; then
 
-			xinit_install
+			xwiki-ctrl_install
 
 		else
 
 			echo
-			echo " Xinit is up to date. Xinit version: $installed_xinit_version"
+			echo " Xinit is up to date. Xinit version: $installed_xwiki-ctrl_version"
 			echo
 			exit 0
 		fi
@@ -56,22 +56,22 @@ xinit_update ()
 
 }
 
-xinit_install ()
+xwiki-ctrl_install ()
 {
 
 # check dependencies
 check_dependencies;
 
-if [[ ! -e var/lib/xinit/vars ]]; then
+if [[ ! -e var/lib/xwiki-ctrl/vars ]]; then
 	
 	echo
-	echo " Couldn't find vars file! Please go into xinit folder and run install.sh!"
+	echo " Couldn't find vars file! Please go into xwiki-ctrl folder and run install.sh!"
 	echo
 	exit 1
 
 else
 
-	. var/lib/xinit/vars
+	. var/lib/xwiki-ctrl/vars
 
 fi
 
@@ -79,13 +79,13 @@ if [[ -d $LIB_DIR ]]; then
 
 	echo "Lib dir ($LIB_DIR) already exists. Installing the last one ..."
 	rm -rf $LIB_DIR
-	cp -r var/lib/xinit $LIB_DIR
+	cp -r var/lib/xwiki-ctrl $LIB_DIR
 	
 
 else
 
 	echo "Installing lib dir $LIB_DIR..."
-	cp -r var/lib/xinit $LIB_DIR
+	cp -r var/lib/xwiki-ctrl $LIB_DIR
 
 fi
 
@@ -106,31 +106,31 @@ fi
 
 if [[ ! -d ${CONF_DIR} ]]; then
 
-	echo "Installing xinit default configuration! Please edit /etc/xinit/xinit.cfg as you need!"
+	echo "Installing xwiki-ctrl default configuration! Please edit /etc/xwiki-ctrl/xwiki-ctrl.cfg as you need!"
 	mkdir ${CONF_DIR}
-	cp -f etc/xinit/xinit.cfg /etc/xinit/xinit.cfg
+	cp -f etc/xwiki-ctrl/xwiki-ctrl.cfg /etc/xwiki-ctrl/xwiki-ctrl.cfg
 	echo "Installation Finished!"
 
 elif [[ -e "${CONF_DIR}/${XWIKI_CONF_FILE}" ]]; then
 
-	echo "A previous configuration of xinit already exists. I'll not touch it!"
+	echo "A previous configuration of xwiki-ctrl already exists. I'll not touch it!"
 	echo "Installation Finished!"
 
 else
 
-	echo "Installing xinit default configuration! Please edit /etc/xinit/xinit.cfg as you need!"
-	cp -f etc/xinit/xinit.cfg /etc/xinit/xinit.cfg
+	echo "Installing xwiki-ctrl default configuration! Please edit /etc/xwiki-ctrl/xwiki-ctrl.cfg as you need!"
+	cp -f etc/xwiki-ctrl/xwiki-ctrl.cfg /etc/xwiki-ctrl/xwiki-ctrl.cfg
         echo "Installation Finished!"
 
 fi
 }
 
-# Function used to migrate xinit conf (vers <= 0.0.17 ) to version >= 1.0
+# Function used to migrate xwiki-ctrl conf (vers <= 0.0.17 ) to version >= 1.0
 migrate() 
 {
-	OLD_CONFIGURATION_FILE='/etc/xinit/xinit.cfg';
-	NEW_CONFIGURATION_FILE='/etc/xinit/xinit.cfg.new'
-	DEFAULT_NEW_CONFIGURATION_FILE='var/lib/xinit/default.cfg';
+	OLD_CONFIGURATION_FILE='/etc/xwiki-ctrl/xwiki-ctrl.cfg';
+	NEW_CONFIGURATION_FILE='/etc/xwiki-ctrl/xwiki-ctrl.cfg.new'
+	DEFAULT_NEW_CONFIGURATION_FILE='var/lib/xwiki-ctrl/default.cfg';
 
 	if [[ ! -e $OLD_CONFIGURATION_FILE ]]; then
 
@@ -144,15 +144,15 @@ migrate()
                 exit 14
         fi
 
-	./var/lib/xinit/migrate $OLD_CONFIGURATION_FILE $DEFAULT_NEW_CONFIGURATION_FILE $NEW_CONFIGURATION_FILE
+	./var/lib/xwiki-ctrl/migrate $OLD_CONFIGURATION_FILE $DEFAULT_NEW_CONFIGURATION_FILE $NEW_CONFIGURATION_FILE
 }
 
 case $1 in
         --install)
-                        xinit_install
+                        xwiki-ctrl_install
                         ;;
         --update)
-                        xinit_update
+                        xwiki-ctrl_update
                         ;;
 	--migrate)
 			migrate
