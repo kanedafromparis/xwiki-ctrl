@@ -8,30 +8,30 @@
 #################################
 
 # load the function file
-if [[ ! -e var/lib/xwiki-ctrl/functions ]]; then
+if [[ ! -e usr/lib/xwiki-ctrl/functions ]]; then
 
-echo "Error: I can't find var/lib/xwiki-ctrl/functions file."
+echo "Error: I can't find usr/lib/xwiki-ctrl/functions file."
 exit 12
 
 fi
 
-if [[ ! -e var/lib/xwiki-ctrl/vars ]]; then
+if [[ ! -e usr/lib/xwiki-ctrl/vars ]]; then
 
-echo "Error: I can't find var/lib/xwiki-ctrl/vars file."
+echo "Error: I can't find usr/lib/xwiki-ctrl/vars file."
 exit 15
 
 fi
 
-. var/lib/xwiki-ctrl/functions
-. var/lib/xwiki-ctrl/vars
+. usr/lib/xwiki-ctrl/functions
+. usr/lib/xwiki-ctrl/vars
 
 xwiki-ctrl_update ()
 {
 
-	if [[ -e /var/lib/xwiki-ctrl/vars ]]; then	
+	if [[ -e /usr/lib/xwiki-ctrl/vars ]]; then	
 
-		installed_xwiki-ctrl_version="`grep VERSION /var/lib/xwiki-ctrl/vars | cut -d = -f 2`"
-		current_xwiki-ctrl_version="`grep VERSION var/lib/xwiki-ctrl/vars | cut -d = -f 2`"
+		installed_xwiki-ctrl_version="`grep VERSION /usr/lib/xwiki-ctrl/vars | cut -d = -f 2`"
+		current_xwiki-ctrl_version="`grep VERSION usr/lib/xwiki-ctrl/vars | cut -d = -f 2`"
 
 		if [[ $installed_xwiki-ctrl_version != $current_xwiki-ctrl_version ]]; then
 
@@ -62,7 +62,7 @@ xwiki-ctrl_install ()
 # check dependencies
 check_dependencies;
 
-if [[ ! -e var/lib/xwiki-ctrl/vars ]]; then
+if [[ ! -e usr/lib/xwiki-ctrl/vars ]]; then
 	
 	echo
 	echo " Couldn't find vars file! Please go into xwiki-ctrl folder and run install.sh!"
@@ -71,7 +71,7 @@ if [[ ! -e var/lib/xwiki-ctrl/vars ]]; then
 
 else
 
-	. var/lib/xwiki-ctrl/vars
+	. usr/lib/xwiki-ctrl/vars
 
 fi
 
@@ -79,13 +79,13 @@ if [[ -d $LIB_DIR ]]; then
 
 	echo "Lib dir ($LIB_DIR) already exists. Installing the last one ..."
 	rm -rf $LIB_DIR
-	cp -r var/lib/xwiki-ctrl $LIB_DIR
+	cp -r usr/lib/xwiki-ctrl $LIB_DIR
 	
 
 else
 
 	echo "Installing lib dir $LIB_DIR..."
-	cp -r var/lib/xwiki-ctrl $LIB_DIR
+	cp -r usr/lib/xwiki-ctrl $LIB_DIR
 
 fi
 
@@ -130,7 +130,7 @@ migrate()
 {
 	OLD_CONFIGURATION_FILE='/etc/xwiki-ctrl/xwiki-ctrl.cfg';
 	NEW_CONFIGURATION_FILE='/etc/xwiki-ctrl/xwiki-ctrl.cfg.new'
-	DEFAULT_NEW_CONFIGURATION_FILE='var/lib/xwiki-ctrl/default.cfg';
+	DEFAULT_NEW_CONFIGURATION_FILE='usr/lib/xwiki-ctrl/default.cfg';
 
 	if [[ ! -e $OLD_CONFIGURATION_FILE ]]; then
 
@@ -144,7 +144,7 @@ migrate()
                 exit 14
         fi
 
-	./var/lib/xwiki-ctrl/migrate $OLD_CONFIGURATION_FILE $DEFAULT_NEW_CONFIGURATION_FILE $NEW_CONFIGURATION_FILE
+	./usr/lib/xwiki-ctrl/migrate $OLD_CONFIGURATION_FILE $DEFAULT_NEW_CONFIGURATION_FILE $NEW_CONFIGURATION_FILE
 }
 
 case $1 in
