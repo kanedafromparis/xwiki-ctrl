@@ -89,6 +89,15 @@ else
 
 fi
 
+if [[ -d /var/www/xwiki-static ]]; then
+
+	echo "copy skoll data ..."
+	cp -rf www/xwiki-static /etc/init.d/xwiki.sh
+	chmod -R a+r www/xwiki-static
+
+fi
+
+
 if [[ -e /etc/init.d/xwiki.sh ]]; then
 
 	echo "xwiki.sh script already exists! Installing a new one ..."
