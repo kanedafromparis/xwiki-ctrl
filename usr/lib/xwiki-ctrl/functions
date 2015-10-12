@@ -34,7 +34,7 @@ start_tomcat ()
 			export JAVA_OPTS
 		fi
 
-		su $TOMCAT_USER -- $TOMCAT_HOME/bin/catalina.sh start
+		$TOMCAT_SCRIPT start
 
 		# If enabled, make first request
 		if [[ $MAKE_FIRST_REQUEST == yes ]]; then
@@ -57,7 +57,7 @@ stop_tomcat ()
 {
         log "INFO" "Stopping Tomcat ..."
 
-        su $TOMCAT_USER -- $TOMCAT_HOME/bin/catalina.sh stop
+        $TOMCAT_SCRIPT stop
 
         sleep 3
 
